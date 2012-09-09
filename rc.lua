@@ -49,32 +49,45 @@ editor_cmd = terminal .. " -e " .. editor
 -- If you do not like this or do not have such a key,
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
-modkey = "Mod4"
+modkey = "Mod1"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
-    awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
-    awful.layout.suit.floating,
-    awful.layout.suit.magnifier
+    awful.layout.suit.fair,            -- 1
+    awful.layout.suit.fair.horizontal, -- 2
+    awful.layout.suit.tile,            -- 3
+    awful.layout.suit.tile.left,       -- 4
+    awful.layout.suit.tile.bottom,     -- 5
+    awful.layout.suit.tile.top,        -- 6
+    awful.layout.suit.spiral,          -- 7
+    awful.layout.suit.spiral.dwindle,  -- 8
+    awful.layout.suit.max,             -- 9
+    awful.layout.suit.max.fullscreen,  -- 10
+    awful.layout.suit.floating,        -- 11
+    awful.layout.suit.magnifier        -- 12
 }
 -- }}}
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
-tags = {}
+tags = {
+  names  = { 1, 2, 3, 4, 5, 6, 7, 8, 9 },
+  layout = {
+    layouts[1],
+    layouts[1],
+    layouts[1],
+    layouts[11],
+    layouts[1],
+    layouts[1],
+    layouts[1],
+    layouts[1],
+    layouts[1]
+  }
+}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
+    tags[s] = awful.tag(tags.names, s, tags.layout)
 end
 -- }}}
 
@@ -84,7 +97,8 @@ myawesomemenu = {
    { "manual", terminal .. " -e man awesome" },
    { "edit config", editor_cmd .. " " .. awesome.conffile },
    { "restart", awesome.restart },
-   { "quit", awesome.quit }
+   { "quit", awesome.quit },
+   { "shutdown", 'gksudo poweroff' }
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
@@ -341,7 +355,7 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { class = "Gvim" },
       properties = { tag = tags[1][2] } },
-    { rule = { class = "Chromium" },
+    { rule = { class = "pidgin" },
       properties = { tag = tags[1][3] } },
     { rule = { class = "Google-chrome" },
       properties = { tag = tags[1][4] } },
@@ -386,4 +400,5 @@ client.add_signal("unfocus", function(c) c.border_color = beautiful.border_norma
 
 -- Startup
 
-awful.util.spawn_with_shell('gnome-settings-daemon')
+awful.util.spawn_with_shell('gnome-session')
+awful.util.spawn_with_shell('wmname LG3G') -- Let java render itself normally
