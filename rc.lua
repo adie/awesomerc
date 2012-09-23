@@ -347,6 +347,7 @@ awful.rules.rules = {
                      focus = true,
                      keys = clientkeys,
                      buttons = clientbuttons } },
+    -- You can use `xprop` utility to find window class
     { rule = { class = "MPlayer" },
       properties = { floating = true } },
     { rule = { class = "pinentry" },
@@ -355,7 +356,7 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { class = "Gvim" },
       properties = { tag = tags[1][2] } },
-    { rule = { class = "pidgin" },
+    { rule = { class = "Pidgin" },
       properties = { tag = tags[1][3] } },
     { rule = { class = "Google-chrome" },
       properties = { tag = tags[1][4] } },
